@@ -30,7 +30,7 @@ HAM50.Z68 ord
 ) rr
 on substr(ord.Z68_REC_KEY ,0, 9) = rr.ADM_N
 inner join FCL01.Z13 brief
-on rr.adm_n = brief.z13_rec_key
+on rr.z00r_doc_number = brief.z13_rec_key
 WHERE 
 ord.Z68_ORDER_STATUS != 'CLS'
 and(
