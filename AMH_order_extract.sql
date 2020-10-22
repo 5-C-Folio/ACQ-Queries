@@ -32,6 +32,8 @@ rr.author,
 ord.z68_isbn,
 ord.z68_material_type,
 ord.z68_vendor_reference_no
+-- Umass and Smith will use the same export critera as Amherst. To run the Umass query, change the AMH50.Z68 and AMH50.Z103 to UMA50.Z68 and UMA.Z103.
+-- you will also need to change the org code prefix to UM or SC
 from AMH50.Z68 ord
 LEFT join 
 (
