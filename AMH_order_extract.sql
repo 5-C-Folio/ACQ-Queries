@@ -1,6 +1,8 @@
 select 
 substr(ord.Z68_REC_KEY,0,9),
 ord.Z68_ORDER_Type ,
+rr.z13key
+,
 
 
  ord.Z68_Order_NUMBER,
@@ -33,7 +35,7 @@ ord.z68_vendor_reference_no
 from AMH50.Z68 ord
 LEFT join 
 (
-    select brief.Z13_TITLE,brief.Z13_author as author ,substr(lkr.Z103_REC_KEY,6,9) as ADM_N from 
+    select brief.Z13_REC_KEY as z13key , brief.Z13_TITLE,brief.Z13_author as author ,substr(lkr.Z103_REC_KEY,6,9) as ADM_N from 
     AMH50.Z103 lkr
     inner join  
     FCL01.z13 brief
@@ -54,4 +56,3 @@ OR
 (ord.Z68_ORDER_TYPE = 'M'
 and ord.Z68_ORDER_STATUS = 'SV'
 and ord.Z68_OPEN_DATE > 20190701)
-
