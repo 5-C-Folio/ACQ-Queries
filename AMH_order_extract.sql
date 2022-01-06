@@ -1,3 +1,5 @@
+
+
 select 
 substr(ord.Z68_REC_KEY,0,9),
 ord.Z68_ORDER_Type ,
@@ -18,7 +20,8 @@ ord.z68_invoice_status,
 ord.Z68_ORDER_STATUS ,
 ord.Z68_ORDER_STATUS_DATE_X,
 ord.z68_method_of_aquisition,
-concat('AC',ord.Z68_VENDOR_CODE),
+concat('AC' ,ord.Z68_VENDOR_CODE) as vendorCode,
+bud.Z76_NAME,
 ord.z68_vendor_note,
 ord.Z68_NO_UNITS,
 ord.Z68_UNIT_PRICE,
@@ -46,7 +49,11 @@ LEFT join
     and substr(lkr.Z103_REC_KEY_1,1,5)='FCL01'
 ) rr
 on substr(ord.Z68_REC_KEY ,0, 9) = rr.ADM_N
-
+left join AMH50.Z601 pol
+on substr(ord.Z68_REC_KEY ,0, 9) =  substr(pol.Z601_REC_KEY_3 ,0, 9)
+left join AMH50.Z76 bud
+on 
+substr(pol.Z601_REC_KEY ,0, 50) = bud.Z76_BUDGET_NUMBER
 WHERE 
 (ord.Z68_ORDER_TYPE = 'S'
 and ord.Z68_ORDER_STATUS = 'SV'
@@ -57,4 +64,4 @@ and ord.Z68_ORDER_STATUS = 'SV')
 OR
 (ord.Z68_ORDER_TYPE = 'M'
 and ord.Z68_ORDER_STATUS = 'SV'
-and ord.Z68_OPEN_DATE > 20190701)
+and ord.Z68_OPEN_DATE > 20190701);
