@@ -21,7 +21,8 @@ ord.Z68_ORDER_STATUS ,
 ord.Z68_ORDER_STATUS_DATE_X,
 ord.z68_method_of_aquisition,
 concat('AC' ,ord.Z68_VENDOR_CODE) as vendorCode,
-bud.Z76_NAME,
+budName.fundName,
+budName.budNum,
 ord.z68_vendor_note,
 ord.Z68_NO_UNITS,
 ord.Z68_UNIT_PRICE,
@@ -49,11 +50,13 @@ LEFT join
     and substr(lkr.Z103_REC_KEY_1,1,5)='FCL01'
 ) rr
 on substr(ord.Z68_REC_KEY ,0, 9) = rr.ADM_N
-left join AMH50.Z601 pol
-on substr(ord.Z68_REC_KEY ,0, 9) =  substr(pol.Z601_REC_KEY_3 ,0, 9)
-left join AMH50.Z76 bud
-on 
-substr(pol.Z601_REC_KEY ,0, 50) = bud.Z76_BUDGET_NUMBER
+
+left join
+( select distinct substr(pol.Z601_REC_KEY_3 ,0, 9) as ordnum, bud.Z76_NAME as fundName, Z76_BUDGET_NUMBER as budNum from 
+ AMH50.Z601 pol
+inner join AMH50.Z76 bud
+on  substr(pol.Z601_REC_KEY ,0, 50) = bud.Z76_BUDGET_NUMBER) budName
+on rr.ADM_N = budname.ordnum
 WHERE 
 (ord.Z68_ORDER_TYPE = 'S'
 and ord.Z68_ORDER_STATUS = 'SV'
